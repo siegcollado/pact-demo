@@ -1,0 +1,11 @@
+schema {
+  query: Query
+}
+type Query {
+  allFilms(after: String first: Int before: String last: Int): [Film]
+}
+type Film {
+  title: String
+  id: ID!
+  releaseDate: AWSDate
+}
