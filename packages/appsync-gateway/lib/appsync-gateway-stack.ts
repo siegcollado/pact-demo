@@ -1,39 +1,49 @@
 import * as cdk from '@aws-cdk/core'
 import * as appsync from '@aws-cdk/aws-appsync'
-import * as path from 'path'
+import * as ssm from '@aws-cdk/aws-ssm'
 
-const dummyRequest = appsync.MappingTemplate.fromFile(path.join(__dirname, 'mapping-templates', 'empty-request.vtl'))
-
-const dummyResponse = appsync.MappingTemplate.fromFile(path.join(__dirname, 'mapping-templates', 'empty-response.vtl'))
+import * as interfaces from './interfaces'
+import * as objects from './objects'
+import * as relay from './relay'
+import * as resolver from './resolver'
 
 export class AppsyncGatewayStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
+    const schema = new appsync.Schema()
+
     const api = new appsync.GraphqlApi(this, 'AppsyncGateway', {
       name: 'AppsyncGateway',
+      schema
     })
 
-    const film = new appsync.ObjectType('Film', {
-      definition: {
-        title: appsync.GraphqlType.string(),
-        id: appsync.GraphqlType.id({ isRequired: true }),
-        releaseDate: appsync.GraphqlType.awsDate()
-      }
+    // this is important
+    relay.setupRelayTypes(schema)
+    interfaces.setupInterfaces(schema)
+
+    objects.Order.addToApi(schema)
+    objects.Product.addToApi(schema)
+
+    const productDataSource = new appsync.HttpDataSource(this, `${objects.Product.name}DataSource`, {
+      api,
+      endpoint: ssm.StringParameter.valueFromLookup(this, 'product-stack-url')
     })
 
-    api.addQuery('allFilms', new appsync.ResolvableField({
-      returnType: film.attribute({ isList: true }),
-      args: {
-        after: appsync.GraphqlType.string(),
-        first: appsync.GraphqlType.int(),
-        before: appsync.GraphqlType.string(),
-        last: appsync.GraphqlType.int()
-      },
-      requestMappingTemplate: dummyRequest,
-      responseMappingTemplate: dummyResponse
-    }))
+    const singleProductResolver = new resolver.SingleItemResolver({
+      objectNode: objects.Product,
+      resource: 'product',
+      dataSource: productDataSource
+    })
 
-    api.addType(film)
+    schema.addQuery(singleProductResolver.queryName, singleProductResolver)
+
+    const listProductResolver = new resolver.ListItemsResolver({
+      objectNode: objects.Product,
+      resource: 'products',
+      dataSource: productDataSource
+    })
+
+    schema.addQuery(listProductResolver.queryName, listProductResolver)
   }
 }

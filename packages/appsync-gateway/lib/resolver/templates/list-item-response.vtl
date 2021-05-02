@@ -1,0 +1,21 @@
+#if($ctx.result.statusCode == 200)
+  #set($edges = [])
+  #set($body = $util.parseJson($ctx.result.body))
+
+  #foreach($item in $body.items)
+    $util.qr($edges.add({ "node": $item, "cursor": $item.id }))
+  #end
+
+  {
+    "edges": $util.toJson($edges),
+    "pageInfo": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "hello",
+      "endCursor": "hello"
+    }
+  }
+#else
+  $util.appendError($ctx.result.body, "$ctx.result.statusCode")
+#end
+

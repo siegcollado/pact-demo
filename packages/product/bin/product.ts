@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 import 'source-map-support/register'
 import * as cdk from '@aws-cdk/core'
-import { AppsyncGatewayStack } from '../lib/appsync-gateway-stack'
-import * as fs from 'fs'
-import * as path from 'path'
+import { ProductStack } from '../lib/product-stack'
 
 const app = new cdk.App({ autoSynth: false })
-new AppsyncGatewayStack(app, 'AppsyncGateway', {
+new ProductStack(app, 'Products', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -24,21 +22,3 @@ new AppsyncGatewayStack(app, 'AppsyncGateway', {
 })
 
 app.synth()
-
-fs.readFile(path.join(__dirname, '../cdk.out/tree.json'), 'utf8', (err, data) => {
-  if (err) {
-    console.log(err)
-    throw err
-  }
-
-  // not sure if this is the right way of going at this, eto lang nakikita ko sa internet e.
-  const defn =
-    JSON.parse(data).tree.children.AppsyncGateway.children.AppsyncGateway.children.Schema.attributes['aws:cdk:cloudformation:props'].definition
-
-  fs.writeFile('schema.graphql', defn, (err) => {
-    if (err) {
-      console.log(err)
-      throw err
-    }
-  })
-})

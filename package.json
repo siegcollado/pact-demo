@@ -8,8 +8,15 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
+    "@aws-cdk/assert": "1.101.0",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@types/pluralize": "^0.0.29",
     "lerna": "^3.20.2",
     "ts-node": "^9.1.1",
-    "typescript": "~4.2"
+    "typescript": "~4.2",
+    "aws-cdk": "1.101.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0"
   }
 }
