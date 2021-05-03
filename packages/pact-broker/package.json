@@ -1,0 +1,21 @@
+{
+  "name": "@pact-demo/pact-broker",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "bin": {
+    "product": "bin/pact-broker.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-ec2": "^1.101.0",
+    "@aws-cdk/aws-ecs": "^1.101.0",
+    "@aws-cdk/aws-ecs-patterns": "^1.101.0",
+    "@aws-cdk/aws-rds": "^1.101.0",
+    "@aws-cdk/core": "1.101.0",
+    "source-map-support": "^0.5.16"
+  }
+}
