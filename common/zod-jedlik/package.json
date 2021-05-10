@@ -1,0 +1,15 @@
+{
+  "name": "@pact-demo/zod-jedlik",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@peak-ai/jedlik": "^1.4.0"
+  },
+  "devDependencies": {
+    "zod": "3.0.0-alpha.4"
+  },
+  "peerDependencies": {
+    "zod": "3.0.0-alpha.4"
+  }
+}
