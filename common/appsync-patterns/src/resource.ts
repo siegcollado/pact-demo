@@ -20,7 +20,7 @@ export type ResourceProps<TFieldName extends string> = {
   name: string,
   interfaceTypes?: appsync.InterfaceType[],
   fields: Record<TFieldName, appsync.IField>,
-  resolvers?: {
+  resolvers: {
     get: ResolverConfig,
     getAll?: ResolverConfig,
     create?: MutationResolverConfig<TFieldName>,
