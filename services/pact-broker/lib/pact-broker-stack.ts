@@ -16,7 +16,7 @@ export class PactBrokerStack extends cdk.Stack {
     })
 
     // Create a load-balanced Fargate service and make it public
-    new ecs_patterns.ApplicationLoadBalancedFargateService(this, "PactBrokerLoadBalancedService", {
+    const service = new ecs_patterns.ApplicationLoadBalancedFargateService(this, "PactBrokerLoadBalancedService", {
       cluster,
       desiredCount: 1,
       cpu: 512,

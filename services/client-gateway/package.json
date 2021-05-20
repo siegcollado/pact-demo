@@ -1,0 +1,23 @@
+{
+  "name": "@pact-demo/client-gateway",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "bin": {
+    "client-gateway": "bin/client-gateway.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-appsync": "1.103.0",
+    "@aws-cdk/aws-lambda": "1.103.0",
+    "@aws-cdk/core": "1.103.0",
+    "@aws-sdk/client-lambda": "^3.16.0",
+    "@pact-demo/appsync-constructs": "*",
+    "@pact-foundation/pact": "^9.15.5",
+    "source-map-support": "^0.5.16"
+  }
+}

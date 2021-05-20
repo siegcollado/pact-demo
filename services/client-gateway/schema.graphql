@@ -1,0 +1,48 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+interface Node {
+  id: ID!
+}
+type PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+  endCursor: String
+}
+type Product implements Node {
+  price: Float
+  name: String!
+  id: ID!
+}
+type ProductEdge {
+  node: Product
+  cursor: String
+}
+type ProductConnection {
+  edges: [ProductEdge!]
+  pageInfo: PageInfo
+}
+type Query {
+  getProduct(id: ID!): Product
+  getOrder(id: ID!): Order
+}
+type Order implements Node {
+  products: [Product]
+  id: ID!
+}
+type OrderEdge {
+  node: Order
+  cursor: String
+}
+type OrderConnection {
+  edges: [OrderEdge!]
+  pageInfo: PageInfo
+}
+input CreateOrderInput {
+  productIds: [ID!]
+}
+type Mutation {
+  createOrder(input: CreateOrderInput!): Order
+}
